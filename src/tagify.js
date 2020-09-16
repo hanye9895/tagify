@@ -822,12 +822,12 @@ Tagify.prototype = {
      * @return {Array} [Array of Objects]
      */
     normalizeTags( tagsItems ){
-        var {whitelist, delimiters, mode} = this.settings,
+        var {whitelist, delimiters, delimiterText, mode} = this.settings,
             whitelistWithProps = whitelist ? whitelist[0] instanceof Object : false,
             // checks if this is a "collection", meanning an Array of Objects
             isArray = tagsItems instanceof Array,
             temp = [],
-            mapStringToCollection = s => (s+"").split(delimiters).filter(n => n).map(v => ({ value:this.trim(v) }))
+            mapStringToCollection = s => (s+"").split(delimiters).filter(n => n).map(v => ({ value:this.trim(v.split(delimiterText)[0]) }))
 
         if( typeof tagsItems == 'number' )
             tagsItems = tagsItems.toString();
