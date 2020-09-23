@@ -73,7 +73,7 @@ export default {
         if( _s.dropdown.highlightFirst )
             // hack jump split (twice for now) todo
             var children = this.DOM.dropdown.content.children
-            if (!children[0].classList.contains('tagify__dropdown__split')){
+            if (children[0] && !children[0].classList.contains('tagify__dropdown__split')){
                 this.dropdown.highlightOption.call(this, children[0])
             }
             else if (children[1] && !children[1].classList.contains('tagify__dropdown__split')){
