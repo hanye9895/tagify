@@ -315,13 +315,14 @@ export default {
                         e.preventDefault()
                         var dropdownItems;
 
+                        var self = this
                         var nextElm = function(){
                             if( selectedElm )
                                 selectedElm = selectedElm[(e.key == 'ArrowUp' || e.key == 'Up' ? "previous" : "next") + "ElementSibling"];
     
                             // if no element was found, loop
                             if( !selectedElm ){
-                                dropdownItems = this.DOM.dropdown.content.children
+                                dropdownItems = self.DOM.dropdown.content.children
                                 selectedElm = dropdownItems[e.key == 'ArrowUp' || e.key == 'Up' ? dropdownItems.length - 1 : 0];
                             }
                             return selectedElm
