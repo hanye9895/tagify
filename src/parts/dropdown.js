@@ -71,7 +71,18 @@ export default {
         this.dropdown.fill.call(this, noMatchListItem)
 
         if( _s.dropdown.highlightFirst )
-            this.dropdown.highlightOption.call(this, this.DOM.dropdown.content.children[0])
+            // hack jump split (twice for now) todo
+            var children = this.DOM.dropdown.content.children
+            if (!children[0].classList.contains('tagify__dropdown__split')){
+                this.dropdown.highlightOption.call(this, children[0])
+            }
+            else if (children[1] && !children[1].classList.contains('tagify__dropdown__split')){
+                this.dropdown.highlightOption.call(this, children[1])
+            }
+            else if (children[2] && !children[2].classList.contains('tagify__dropdown__split')){
+                this.dropdown.highlightOption.call(this, children[2])
+            }
+    
 
         // bind events, exactly at this stage of the code. "dropdown.show" method is allowed to be
         // called multiple times, regardless if the dropdown is currently visible, but the events-binding
@@ -304,14 +315,25 @@ export default {
                         e.preventDefault()
                         var dropdownItems;
 
-                        if( selectedElm )
-                            selectedElm = selectedElm[(e.key == 'ArrowUp' || e.key == 'Up' ? "previous" : "next") + "ElementSibling"];
-
-                        // if no element was found, loop
-                        if( !selectedElm ){
-                            dropdownItems = this.DOM.dropdown.content.children
-                            selectedElm = dropdownItems[e.key == 'ArrowUp' || e.key == 'Up' ? dropdownItems.length - 1 : 0];
+                        var nextElm = function(){
+                            if( selectedElm )
+                                selectedElm = selectedElm[(e.key == 'ArrowUp' || e.key == 'Up' ? "previous" : "next") + "ElementSibling"];
+    
+                            // if no element was found, loop
+                            if( !selectedElm ){
+                                dropdownItems = this.DOM.dropdown.content.children
+                                selectedElm = dropdownItems[e.key == 'ArrowUp' || e.key == 'Up' ? dropdownItems.length - 1 : 0];
+                            }
+                            return selectedElm
                         }
+                        
+                        // hack jump split (twice for now) todo
+                        selectedElm = nextElm()
+                        if (selectedElm.classList.contains('tagify__dropdown__split'))
+                            selectedElm = nextElm()
+                        if (selectedElm.classList.contains('tagify__dropdown__split'))
+                            selectedElm = nextElm()
+                        
 
                         this.dropdown.highlightOption.call(this, selectedElm, true);
                         break;
